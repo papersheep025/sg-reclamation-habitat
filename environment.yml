@@ -1,0 +1,28 @@
+name: sg-reclaim
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - geopandas
+  - pyogrio
+  - shapely
+  - pyproj
+  - rasterio
+  - rioxarray
+  - xarray
+  - scikit-image
+  - scikit-learn
+  - matplotlib
+  - contextily
+  - earthengine-api
+  - geemap
+  - requests
+  - pyyaml
+  - jupyterlab
+  - ipykernel
+  - pip
+  - pip:
+      - -e .

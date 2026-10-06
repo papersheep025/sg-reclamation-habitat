@@ -1,0 +1,35 @@
+baseline,group,HABITAT_TYPE,area_ha,share_of_all_pct,share_of_mapped_habitat_pct
+map_2010_11,habitat,Other Vegetation,12.08,0.5,34.27
+map_2010_11,habitat,Mudflat,6.71,0.28,19.05
+map_2010_11,habitat,Mangrove,5.55,0.23,15.75
+map_2010_11,habitat,Water,4.89,0.2,13.88
+map_2010_11,habitat,Shallow Water,1.97,0.08,5.6
+map_2010_11,habitat,Sandflat,1.42,0.06,4.03
+map_2010_11,habitat,Built-up,1.2,0.05,3.42
+map_2010_11,habitat,Seagrass and Algae,0.91,0.04,2.58
+map_2010_11,habitat,Rock Bund,0.28,0.01,0.81
+map_2010_11,habitat,Sandy Beach,0.15,0.01,0.42
+map_2010_11,habitat,Openland,0.07,0.0,0.2
+map_2010_11,unmapped,Unmapped / open water,472.55,19.44,
+map_2010_11,works,Water,272.72,11.22,
+map_2010_11,works,Openland,50.7,2.09,
+map_2018,habitat,Water,24.51,1.01,22.35
+map_2018,habitat,Sand and Rubble,18.1,0.74,16.51
+map_2018,habitat,Mudflat,16.1,0.66,14.68
+map_2018,habitat,Other Vegetation,11.18,0.46,10.19
+map_2018,habitat,Sandflat,7.95,0.33,7.25
+map_2018,habitat,Shallow Water,7.13,0.29,6.5
+map_2018,habitat,Openland,5.53,0.23,5.05
+map_2018,habitat,Mangrove,5.15,0.21,4.7
+map_2018,habitat,Seagrass Meadow,4.19,0.17,3.82
+map_2018,habitat,Seagrass and Algae,3.18,0.13,2.9
+map_2018,habitat,Sandy Beach,2.01,0.08,1.83
+map_2018,habitat,Built-up,1.71,0.07,1.56
+map_2018,habitat,Coastal Vegetation,1.55,0.06,1.41
+map_2018,habitat,Coral Rubble with Seagrass and Algae,0.8,0.03,0.73
+map_2018,habitat,Rock Bund,0.3,0.01,0.27
+map_2018,habitat,Coral on Rock Bund,0.23,0.01,0.21
+map_2018,habitat,Rocky Shore,0.03,0.0,0.03
+map_2018,unmapped,Unmapped / open water,1224.41,50.37,
+map_2018,works,Openland,220.2,9.06,
+map_2018,works,Water,45.38,1.87,

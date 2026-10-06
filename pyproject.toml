@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reclaim"
+version = "0.1.0"
+description = "Annual land reclamation mapping and habitat attribution for Singapore, 2016-2025"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas",
+    "geopandas",
+    "pyogrio",
+    "pyproj",
+    "rasterio",
+    "requests",
+    "pyyaml",
+    "earthengine-api",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,87 @@
+# Single source of truth for parameters. Notebooks read this via reclaim.config.load().
+
+project:
+  crs: "EPSG:3414"          # SVY21, used for all area calculations
+  pixel_size_m: 10
+  ee_project: ""            # each member fills in their own Google Cloud project ID
+
+aoi:
+  # Rough bounding box only, used to filter imagery (lon_min, lat_min, lon_max, lat_max).
+  # Results MUST be clipped to Singapore territorial waters (data/raw/boundary) before any
+  # statistics, otherwise Johor reclamation (e.g. Forest City) is counted.
+  bbox: [103.59, 1.13, 104.10, 1.48]
+  boundary_file: "data/raw/boundary/sg_osm_boundary.geojson"   # OSM admin_level=2, via Nominatim
+
+years:
+  collect: [2015, 2026]     # inclusive; one extra year each side for persistence test
+  study: [2016, 2025]       # inclusive; years reported in results
+  landsat: [2014, 2016]     # inclusive; Landsat 8 covers the pre-Sentinel-2 baseline (2016 needs 2014-2015 as water)
+  s1: [2015, 2026]          # inclusive; optional Sentinel-1 cross-check
+
+imagery:
+  s2_collection: "COPERNICUS/S2_HARMONIZED"                 # L1C, full 2015-2026 coverage
+  cloud_collection: "GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED"
+  cloud_band: "cs_cdf"
+  cloud_threshold: 0.6      # starting value, tune in 01_collect
+  landsat_collection: "LANDSAT/LC08/C02/T1_TOA"
+  s1_collection: "COPERNICUS/S1_GRD"                        # optional cross-check
+  mndwi_percentile: 80      # high percentile = high-tide state, keeps tidal flats as water
+  min_valid_obs: 5          # pixels below this are flagged low-confidence
+  nodata: -9999
+  tile_px: 1024             # tile size for Earth Engine computePixels requests
+
+classification:
+  method: "otsu"            # "otsu" or "fixed"
+  fixed_threshold: 0.0
+
+detection:
+  water_years_before: 2     # y-2, y-1 must be water
+  land_years_after: 2       # y, y+1 must be land
+  require_no_reversion: true
+  min_patch_ha: 0.5
+  morph_open_px: 1
+
+habitat:
+  # IDs verified against the data.gov.sg metadata API on 2026-10-05. Older IDs
+  # (d_38dddc..., d_e83c2d..., and the separate code table d_35136d...) now return 404.
+  datasets:
+    map_2010_11: "d_37d905893542417ee27c2f9153c08330"   # GeoJSON, ~36 MB
+    map_2018: "d_18bcfe0a1b8c77f9b4493cef72ffd717"      # GeoJSON, ~71 MB
+  api: "https://api-open.data.gov.sg/v1/public/api/datasets/{dataset_id}/poll-download"
+  code_field: "HABITAT_CODE"
+  type_field: "HABITAT_TYPE"
+  # which habitat map is the "before" state for reclamation detected in each year
+  baseline_for_year:
+    map_2010_11: [2016, 2018]
+    map_2018: [2019, 2025]
+  unmapped_label: "Unmapped / open water"
+  # Pulau Tekong was mid-reclamation in both maps: its Openland and Water there are bunded basins
+  # and sand fill, not natural habitat. Reported separately in RQ2, left out of both sides of RQ3.
+  works:
+    label: "Reclamation works (Pulau Tekong)"
+    bbox: [103.97, 1.375, 104.12, 1.45]     # lon_min, lat_min, lon_max, lat_max
+    classes:
+      map_2010_11: ["Openland", "Water"]
+      map_2018: ["Openland", "Water"]
+
+reference:
+  land_area_dataset: "d_f74e5ee9575e98ba439bee67e8f9b097"   # SLA Total Land Area of Singapore, CSV, 1960-2025
+  # OSM reservoirs and solar plants, masked out in stage 3 (floating solar looks like new land)
+  osm_exclusions: "data/raw/reference/osm_reservoir_solar.json"
+
+sar:
+  # Sentinel-1 cross-check. Radar water = VV below this quantile of VV over stable optical water.
+  # Otsu (about -13 dB) put fresh sand fill (about -15 dB) on the water side; 0.99 is pulled up by
+  # rough sea and ships. 0.95 gives about -17 dB.
+  water_quantile: 0.95
+  # a polygon counts as water (land) in a year when at least this share of its valid pixels is
+  min_frac: 0.5
+
+stats:
+  bootstrap_n: 2000         # RQ3 95% intervals: resample reclamation polygons with replacement
+  random_seed: 5219
+
+validation:
+  n_points: 300
+  strata: ["reclaimed", "stable_water", "stable_land"]
+  random_seed: 5219
